@@ -1,13 +1,28 @@
-body{
-    background-color: #000;
-    text-align: center;
+body {
+  background-color: #000;
+  text-align: center;
 }
 
-h1{
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
+h1 {
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #myCanvas {
-    background-color: #2a5;
+  background-color: #2a5;
+}
+
+button {
+  background-color: #fff;
+  font-size: 20px;
+  padding: 5px 7px 7px 5px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-shadow: 1px 1px black;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #aaa;
 }
