@@ -70,7 +70,7 @@
 
       const graph = world.graph;
 
-      const viewport = new Viewport(myCanvas);
+      const viewport = new Viewport(myCanvas, world.zoom, world.offset);
 
       const tools = {
         graph: { button: graphBtn, editor: new GraphEditor(viewport, graph) },
@@ -132,6 +132,8 @@
           );
 
           if (confirmSave) {
+            world.zoom = viewport.zoom;
+            world.offset = viewport.offset;
             // Create a download link and save the file
             const element = document.createElement("a");
             element.setAttribute(
