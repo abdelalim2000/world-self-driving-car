@@ -10,6 +10,16 @@
     <div id="controls">
       <button onclick="dispose()">🗑️</button>
       <button onclick="save()">💾</button>
+      <label for="fileInput" class="file-inbut-label">
+        📁
+        <input
+          type="file"
+          name=""
+          id="fileInput"
+          accept=".world"
+          onchange="load(event)"
+        />
+      </label>
       &nbsp;
       <button id="graphBtn" onclick="setMode('graph')">🌐</button>
       <button id="stopBtn" onclick="setMode('stop')">🛑</button>
@@ -56,7 +66,7 @@
 
       const worldString = localStorage.getItem("world");
       const worldInfo = worldString ? JSON.parse(worldString) : null;
-      const world = worldInfo ? World.load(worldInfo) : new World(new Graph());
+      let world = worldInfo ? World.load(worldInfo) : new World(new Graph());
 
       const graph = world.graph;
 
@@ -109,7 +119,57 @@
       }
 
       function save() {
-        localStorage.setItem("world", JSON.stringify(world));
+        // Prompt the user for a filename
+        const filename =
+          prompt("Enter a filename for the save (with .world extension):") +
+          ".world";
+        console.log(filename);
+
+        // Check if the user entered a filename and confirmed the action
+        if (filename) {
+          const confirmSave = confirm(
+            `Are you sure you want to save the file as "${filename}"?`
+          );
+
+          if (confirmSave) {
+            // Create a download link and save the file
+            const element = document.createElement("a");
+            element.setAttribute(
+              "href",
+              `data:application/json;charset=utf-8,${encodeURIComponent(
+                JSON.stringify(world)
+              )}`
+            );
+            element.setAttribute("download", filename);
+            element.click();
+
+            // Optionally save the data in local storage
+            localStorage.setItem("world", JSON.stringify(world));
+            alert("File saved successfully!");
+          } else {
+            alert("Save operation canceled.");
+          }
+        } else {
+          alert("No filename entered. Save operation canceled.");
+        }
+      }
+
+      function load(event) {
+        const file = event.target.files[0];
+        if (!file) {
+          alert("No File Selected");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (evt) => {
+          const fileContent = evt.target.result;
+          const jsonData = JSON.parse(fileContent);
+          world = World.load(jsonData);
+          localStorage.setItem("world", JSON.stringify(world));
+          location.reload();
+        };
       }
 
       function setMode(mode) {
