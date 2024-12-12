@@ -36,7 +36,7 @@ class Marking {
         return new Target(point, dir, info.width, info.height);
 
       default:
-        break;
+        return new Marking(point, dir, info.width, info.height);
     }
   }
 
